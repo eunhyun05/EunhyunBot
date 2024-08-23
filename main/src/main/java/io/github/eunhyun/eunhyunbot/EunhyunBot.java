@@ -17,7 +17,7 @@ public class EunhyunBot extends EunhyunBotAPI {
 
         saveDefaultConfig();
 
-        botManager = new DiscordBotManagerImpl(getConfig());
+        this.botManager = new DiscordBotManagerImpl(getConfig());
 
         handleCommands();
     }
