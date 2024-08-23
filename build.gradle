@@ -28,6 +28,7 @@ allprojects {
         implementation "ch.qos.logback:logback-classic:${logbackClassicVersion}"
         implementation "com.google.code.gson:gson:${gsonVersion}"
         implementation "org.reflections:reflections:${reflectionsVersion}"
+        implementation "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
     }
 
     tasks.withType(JavaCompile).configureEach {
