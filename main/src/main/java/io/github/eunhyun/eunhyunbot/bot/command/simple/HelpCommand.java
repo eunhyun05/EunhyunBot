@@ -2,8 +2,11 @@ package io.github.eunhyun.eunhyunbot.bot.command.simple;
 
 import io.github.eunhyun.eunhyunbot.api.bot.command.simple.ISimpleCommand;
 import io.github.eunhyun.eunhyunbot.api.bot.command.simple.SimpleCommand;
+import io.github.eunhyun.eunhyunbot.api.bot.permission.PermissionUtil;
 import io.github.eunhyun.eunhyunbot.api.factory.EmbedColorFactory;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.reflections.Reflections;
 
@@ -21,6 +24,15 @@ public class HelpCommand implements ISimpleCommand {
 
     @Override
     public void execute(MessageReceivedEvent event) {
+        Member member = event.getMember();
+        if (member == null) {
+            return;
+        }
+
+        if (!PermissionUtil.checkPermissionsAndSendError(event, member, new Permission[]{Permission.ADMINISTRATOR}, "물음표 명령어는 관리자만 사용할 수 있어요.")) {
+            return;
+        }
+
         event.getMessage().delete().queue();
 
         EmbedBuilder embed = new EmbedBuilder()

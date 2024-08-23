@@ -2,9 +2,12 @@ package io.github.eunhyun.eunhyunbot.bot.command.slash;
 
 import io.github.eunhyun.eunhyunbot.api.bot.command.slash.ISlashCommand;
 import io.github.eunhyun.eunhyunbot.api.bot.command.slash.SlashCommand;
+import io.github.eunhyun.eunhyunbot.api.bot.permission.PermissionUtil;
 import io.github.eunhyun.eunhyunbot.api.factory.EmbedColorFactory;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -53,6 +56,15 @@ public class GenerateEmbedCommand implements ISlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
+        Member member = event.getMember();
+        if (member == null) {
+            return;
+        }
+
+        if (!PermissionUtil.checkPermissionsAndSendError(event, member, new Permission[]{Permission.ADMINISTRATOR}, "임베드는 관리자만 생성할 수 있어요.")) {
+            return;
+        }
+
         try {
             OptionMapping color = event.getOption("색상");
             OptionMapping title = event.getOption("제목");
@@ -77,10 +89,9 @@ public class GenerateEmbedCommand implements ISlashCommand {
 
             event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
 
-
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("<a:success:1168266537262657626> 성공 | 임베드생성 <a:success:1168266537262657626>")
+                    .setTitle("<a:check_mark:1276415022498844752> 임베드 생성 | 성공 <a:check_mark:1276415022498844752>")
                     .setDescription("> **성공적으로 임베드를 생성했습니다.**")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
@@ -89,7 +100,7 @@ public class GenerateEmbedCommand implements ISlashCommand {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:success:1168266537262657626> 오류 | 임베드생성 <a:success:1168266537262657626>")
+                    .setTitle("<a:cross_mark:1276415059739807744> 임베드 생성 | 오류 <a:cross_mark:1276415059739807744>")
                     .setDescription("> **임베드를 생성하지 못했습니다.**")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
