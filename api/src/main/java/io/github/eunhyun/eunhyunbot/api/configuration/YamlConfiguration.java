@@ -23,7 +23,16 @@ public class YamlConfiguration implements FileConfiguration {
 
     @Override
     public <T> T get(String path, Class<T> clazz) {
-        Object value = data.get(path);
+        String[] keys = path.split("\\.");
+        Object value = data;
+
+        for (String key : keys) {
+            if (!(value instanceof Map)) {
+                return null;
+            }
+            value = ((Map<?, ?>) value).get(key);
+        }
+
         if (clazz.isInstance(value)) {
             return clazz.cast(value);
         }
@@ -31,8 +40,22 @@ public class YamlConfiguration implements FileConfiguration {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void set(String path, Object value) {
-        data.put(path, value);
+        String[] keys = path.split("\\.");
+        Map<String, Object> current = data;
+
+        for (int i = 0; i < keys.length - 1; i++) {
+            String key = keys[i];
+            Object next = current.get(key);
+            if (!(next instanceof Map)) {
+                next = new LinkedHashMap<>();
+                current.put(key, next);
+            }
+            current = (Map<String, Object>) next;
+        }
+
+        current.put(keys[keys.length - 1], value);
     }
 
     @Override
