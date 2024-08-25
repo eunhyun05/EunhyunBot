@@ -1,9 +1,11 @@
 package io.github.eunhyun.eunhyunbot.bot;
 
+import io.github.eunhyun.eunhyunbot.api.bot.BotEventHandler;
 import io.github.eunhyun.eunhyunbot.api.bot.DiscordBotManager;
 import io.github.eunhyun.eunhyunbot.bot.command.SimpleCommandManager;
 import io.github.eunhyun.eunhyunbot.bot.command.SlashCommandManager;
 import io.github.eunhyun.eunhyunbot.api.configuration.FileConfiguration;
+import io.github.eunhyun.eunhyunbot.listener.AutoVoiceChannelManagerListener;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -18,9 +20,11 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.reflections.Reflections;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Slf4j
 public class DiscordBotManagerImpl implements DiscordBotManager {
@@ -42,8 +46,11 @@ public class DiscordBotManagerImpl implements DiscordBotManager {
 
             builder.addEventListeners(new SimpleCommandManager());
             builder.addEventListeners(slashCommandManager);
+            builder.addEventListeners(new AutoVoiceChannelManagerListener());
 
             jda = builder.build();
+
+            registerEventListeners();
         } catch (Exception e) {
             log.error("봇을 실행하는 도중에 오류가 발생하였습니다.", e);
         }
@@ -74,6 +81,23 @@ public class DiscordBotManagerImpl implements DiscordBotManager {
                 slashCommandManager.getCommands().forEach(commandData -> Objects.requireNonNull(jda.getGuildById(Objects.requireNonNull(getGuild()).getId())).upsertCommand(commandData).queue());
             }
         });
+    }
+
+    private void registerEventListeners() {
+        String packageName = "io.github.eunhyun.eunhyunbot.listener";
+        Reflections reflections = new Reflections(packageName);
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(BotEventHandler.class);
+
+        for (Class<?> clazz : annotated) {
+            try {
+                Object instance = clazz.getDeclaredConstructor().newInstance();
+                if (instance instanceof ListenerAdapter) {
+                    jda.addEventListener(instance);
+                }
+            } catch (Exception e) {
+                log.error("리스너 인스턴스를 생성할 수 없습니다: {}", e.getMessage(), e);
+            }
+        }
     }
 
     private void enableAllIntents(JDABuilder builder) {
