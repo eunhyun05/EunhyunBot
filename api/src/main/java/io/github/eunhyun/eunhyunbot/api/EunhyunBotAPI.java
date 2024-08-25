@@ -4,6 +4,8 @@ import io.github.eunhyun.eunhyunbot.api.bot.DiscordBotManager;
 import io.github.eunhyun.eunhyunbot.api.configuration.FileConfiguration;
 import io.github.eunhyun.eunhyunbot.api.configuration.ResourceHandler;
 import io.github.eunhyun.eunhyunbot.api.configuration.YamlConfiguration;
+import io.github.eunhyun.eunhyunbot.api.repository.TicketRepository;
+import io.github.eunhyun.eunhyunbot.api.repository.WarnRepository;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
@@ -92,4 +94,6 @@ public abstract class EunhyunBotAPI {
     protected void onDisable() {}
 
     protected abstract DiscordBotManager getBotManager();
+
+    protected abstract WarnRepository getWarnRepository();
 }
