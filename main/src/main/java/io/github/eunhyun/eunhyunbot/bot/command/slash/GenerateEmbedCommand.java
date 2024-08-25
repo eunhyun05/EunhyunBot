@@ -4,6 +4,7 @@ import io.github.eunhyun.eunhyunbot.api.bot.command.slash.ISlashCommand;
 import io.github.eunhyun.eunhyunbot.api.bot.command.slash.SlashCommand;
 import io.github.eunhyun.eunhyunbot.api.bot.permission.PermissionUtil;
 import io.github.eunhyun.eunhyunbot.api.factory.EmbedColorFactory;
+import io.github.eunhyun.eunhyunbot.api.util.DiscordEmojiUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -91,7 +92,7 @@ public class GenerateEmbedCommand implements ISlashCommand {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_SUCCESS)
-                    .setTitle("<a:check_mark:1276415022498844752> 임베드 생성 | 성공 <a:check_mark:1276415022498844752>")
+                    .setTitle("%s 임베드 생성 | 성공 %s".formatted(DiscordEmojiUtil.CHECK_MARK, DiscordEmojiUtil.CHECK_MARK))
                     .setDescription("> **성공적으로 임베드를 생성했습니다.**")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();
@@ -100,7 +101,7 @@ public class GenerateEmbedCommand implements ISlashCommand {
 
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:cross_mark:1276415059739807744> 임베드 생성 | 오류 <a:cross_mark:1276415059739807744>")
+                    .setTitle("%s 임베드 생성 | 오류 %s".formatted(DiscordEmojiUtil.CROSS_MARK, DiscordEmojiUtil.CROSS_MARK))
                     .setDescription("> **임베드를 생성하지 못했습니다.**")
                     .build();
             event.replyEmbeds(embed).setEphemeral(true).queue();

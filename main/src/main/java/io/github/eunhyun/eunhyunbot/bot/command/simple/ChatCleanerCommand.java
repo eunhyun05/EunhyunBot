@@ -4,6 +4,7 @@ import io.github.eunhyun.eunhyunbot.api.bot.command.simple.ISimpleCommand;
 import io.github.eunhyun.eunhyunbot.api.bot.command.simple.SimpleCommand;
 import io.github.eunhyun.eunhyunbot.api.bot.permission.PermissionUtil;
 import io.github.eunhyun.eunhyunbot.api.factory.EmbedColorFactory;
+import io.github.eunhyun.eunhyunbot.api.util.DiscordEmojiUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -34,12 +35,12 @@ public class ChatCleanerCommand implements ISimpleCommand {
         if (!PermissionUtil.checkPermissionsAndSendError(event, member, new Permission[]{Permission.ADMINISTRATOR}, "채팅 청소 명령어는 관리자만 사용할 수 있어요.")) {
             return;
         }
-        
+
         String[] args = event.getMessage().getContentRaw().split("\\s", 2);
         if (args.length < 2) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:cross_mark:1276415059739807744> 채팅 청소 | 오류 <a:cross_mark:1276415059739807744>")
+                    .setTitle("%s 채팅 청소 | 오류 %s".formatted(DiscordEmojiUtil.CROSS_MARK, DiscordEmojiUtil.CROSS_MARK))
                     .setDescription("> **청소할 메시지의 개수를 입력해주세요.**")
                     .build();
             event.getChannel().sendMessageEmbeds(embed).queue();
@@ -51,7 +52,7 @@ public class ChatCleanerCommand implements ISimpleCommand {
             if (count < 1 || count > 99) {
                 MessageEmbed embed = new EmbedBuilder()
                         .setColor(EMBED_COLOR_ERROR)
-                        .setTitle("<a:cross_mark:1276415059739807744> 채팅 청소 | 오류 <a:cross_mark:1276415059739807744>")
+                        .setTitle("%s 채팅 청소 | 오류 %s".formatted(DiscordEmojiUtil.CROSS_MARK, DiscordEmojiUtil.CROSS_MARK))
                         .setDescription("**메시지는 1개에서 99개까지만 삭제할 수 있습니다.**")
                         .build();
                 event.getChannel().sendMessageEmbeds(embed).queue();
@@ -61,7 +62,7 @@ public class ChatCleanerCommand implements ISimpleCommand {
         } catch (NumberFormatException ignored) {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(EMBED_COLOR_ERROR)
-                    .setTitle("<a:cross_mark:1276415059739807744> 채팅 청소 | 오류 <a:cross_mark:1276415059739807744>")
+                    .setTitle("%s 채팅 청소 | 오류 %s".formatted(DiscordEmojiUtil.CROSS_MARK, DiscordEmojiUtil.CROSS_MARK))
                     .setDescription("> **유효한 숫자를 입력해주세요.**")
                     .build();
             event.getChannel().sendMessageEmbeds(embed).queue();
@@ -73,11 +74,12 @@ public class ChatCleanerCommand implements ISimpleCommand {
             channel.getIterableHistory()
                     .takeAsync(count + 1)
                     .thenAccept(channel::purgeMessages);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)
-                .setTitle("<a:check_mark:1276415022498844752> 채팅 청소 | 성공 <a:check_mark:1276415022498844752>")
+                .setTitle("%s 채팅 청소 | 성공 %s".formatted(DiscordEmojiUtil.CHECK_MARK, DiscordEmojiUtil.CHECK_MARK))
                 .setDescription("""
                         > **%d개의 메시지를 청소하였습니다.**
                         > **이 메시지는 10초 후에 자동으로 삭제됩니다.**

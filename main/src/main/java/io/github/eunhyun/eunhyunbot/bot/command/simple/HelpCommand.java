@@ -4,6 +4,7 @@ import io.github.eunhyun.eunhyunbot.api.bot.command.simple.ISimpleCommand;
 import io.github.eunhyun.eunhyunbot.api.bot.command.simple.SimpleCommand;
 import io.github.eunhyun.eunhyunbot.api.bot.permission.PermissionUtil;
 import io.github.eunhyun.eunhyunbot.api.factory.EmbedColorFactory;
+import io.github.eunhyun.eunhyunbot.api.util.DiscordEmojiUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -37,7 +38,7 @@ public class HelpCommand implements ISimpleCommand {
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)
-                .setTitle("<a:foxhuhquestion:1276380174534967357> 도움말 | 물음표 명령어 <a:foxhuhquestion:1276380174534967357>");
+                .setTitle("%s 도움말 | 물음표 명령어 %s".formatted(DiscordEmojiUtil.FOX_HUH_QUESTION, DiscordEmojiUtil.FOX_HUH_QUESTION));
 
         String packageName = "io.github.eunhyun.eunhyunbot.bot.command.simple";
         Reflections reflections = new Reflections(packageName);
