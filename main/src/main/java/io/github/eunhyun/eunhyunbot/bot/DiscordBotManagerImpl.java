@@ -5,7 +5,7 @@ import io.github.eunhyun.eunhyunbot.api.bot.DiscordBotManager;
 import io.github.eunhyun.eunhyunbot.bot.command.SimpleCommandManager;
 import io.github.eunhyun.eunhyunbot.bot.command.SlashCommandManager;
 import io.github.eunhyun.eunhyunbot.api.configuration.FileConfiguration;
-import io.github.eunhyun.eunhyunbot.listener.AutoVoiceChannelManagerListener;
+import io.github.eunhyun.eunhyunbot.listener.autovoice.AutoVoiceChannelManagerListener;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
