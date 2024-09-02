@@ -22,6 +22,9 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.EnumSet;
 
 @Slf4j
@@ -39,7 +42,7 @@ public class TicketInteractListener extends ListenerAdapter {
             return;
         }
 
-        String selectedValue = event.getValues().get(0);
+        String selectedValue = event.getValues().getFirst();
         Guild guild = event.getGuild();
         if (guild != null) {
             Category targetCategory = guild.getCategoryById(TARGET_CATEGORY_ID);
@@ -89,6 +92,7 @@ public class TicketInteractListener extends ListenerAdapter {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         if (!event.getComponentId().equals("ticket-close")) {
@@ -104,6 +108,29 @@ public class TicketInteractListener extends ListenerAdapter {
             return;
         }
 
-        event.getChannel().delete().queue();
+        event.getChannel().getHistory().retrievePast(100).queue(messages -> {
+            StringBuilder messageContent = new StringBuilder();
+
+            messages.forEach(message -> {
+                messageContent.append(String.format("[%s] %s: %s%n",
+                        message.getTimeCreated(),
+                        message.getAuthor().getName(),
+                        message.getContentDisplay()));
+            });
+
+            File directory = new File("tickets");
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            File ticketFile = new File(directory, event.getChannel().getName() + ".txt");
+            try (FileWriter writer = new FileWriter(ticketFile)) {
+                writer.write(messageContent.toString());
+            } catch (IOException e) {
+                log.error("Failed to save ticket messages for channel: {}", event.getChannel().getName(), e);
+            }
+
+            event.getChannel().delete().queue();
+        });
     }
 }
