@@ -6,12 +6,14 @@ import io.github.eunhyun.eunhyunbot.bot.command.SimpleCommandManager;
 import io.github.eunhyun.eunhyunbot.bot.command.SlashCommandManager;
 import io.github.eunhyun.eunhyunbot.api.configuration.FileConfiguration;
 import io.github.eunhyun.eunhyunbot.listener.AutoVoiceChannelManagerListener;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -30,6 +32,7 @@ import java.util.Set;
 public class DiscordBotManagerImpl implements DiscordBotManager {
 
     private final FileConfiguration config;
+    @Getter
     private JDA jda;
 
     private final SlashCommandManager slashCommandManager = new SlashCommandManager();
@@ -122,5 +125,11 @@ public class DiscordBotManagerImpl implements DiscordBotManager {
     public TextChannel getTextChannel(String key) {
         String channel_id = config.getString(key);
         return jda.getTextChannelById(channel_id);
+    }
+
+    @Override
+    public String getRoleAsMention(long roleId) {
+        Role roleById = jda.getRoleById(roleId);
+        return roleById != null ? roleById.getAsMention() : null;
     }
 }
