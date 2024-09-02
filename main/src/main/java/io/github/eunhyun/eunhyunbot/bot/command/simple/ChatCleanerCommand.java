@@ -74,8 +74,7 @@ public class ChatCleanerCommand implements ISimpleCommand {
             channel.getIterableHistory()
                     .takeAsync(count + 1)
                     .thenAccept(channel::purgeMessages);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
 
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR_SUCCESS)

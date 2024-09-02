@@ -45,7 +45,7 @@ public class BanCommand implements ISlashCommand {
 
             Guild guild = event.getGuild();
             if (guild != null) {
-                guild.ban(targetUser, 0, TimeUnit.DAYS).queue(it ->
+                guild.ban(targetUser, 0, TimeUnit.DAYS).queue(_ ->
                         event.replyEmbeds(new EmbedBuilder()
                                         .setColor(EMBED_COLOR_SUCCESS)
                                         .setTitle("%s 차단 | 성공 %s".formatted(DiscordEmojiUtil.CHECK_MARK, DiscordEmojiUtil.CHECK_MARK))
@@ -58,7 +58,7 @@ public class BanCommand implements ISlashCommand {
                                         .setThumbnail(targetUser.getEffectiveAvatarUrl())
                                         .build())
                                 .setEphemeral(true)
-                                .queue(success -> sendLogMessage(guild, targetUser.getAsMention(), reason)));
+                                .queue(_ -> sendLogMessage(guild, targetUser.getAsMention(), reason)));
             }
         }
     }

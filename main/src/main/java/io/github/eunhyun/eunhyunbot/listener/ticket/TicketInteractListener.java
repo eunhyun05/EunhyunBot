@@ -111,12 +111,10 @@ public class TicketInteractListener extends ListenerAdapter {
         event.getChannel().getHistory().retrievePast(100).queue(messages -> {
             StringBuilder messageContent = new StringBuilder();
 
-            messages.forEach(message -> {
-                messageContent.append(String.format("[%s] %s: %s%n",
-                        message.getTimeCreated(),
-                        message.getAuthor().getName(),
-                        message.getContentDisplay()));
-            });
+            messages.forEach(message -> messageContent.append(String.format("[%s] %s: %s%n",
+                    message.getTimeCreated(),
+                    message.getAuthor().getName(),
+                    message.getContentDisplay())));
 
             File directory = new File("tickets");
             if (!directory.exists()) {
