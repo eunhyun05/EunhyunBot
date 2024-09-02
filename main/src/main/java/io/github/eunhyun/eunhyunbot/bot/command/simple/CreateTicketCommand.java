@@ -41,7 +41,7 @@ public class CreateTicketCommand implements ISimpleCommand {
         event.getMessage().delete().queue();
 
         StringSelectMenu stringSelectMenu = StringSelectMenu.create("ticket-select-category")
-                .setPlaceholder("ℹ️ 원하시는 상담 카테고리를 선택해주세요.")
+                .setPlaceholder("🖐️ 원하시는 상담 카테고리를 선택해주세요.")
                 .addOptions(SelectOption.of("일반 문의", TicketType.GENERAL.toString().toLowerCase())
                         .withDescription("일반적인 문의")
                         .withEmoji(Emoji.fromUnicode("🌿")))
@@ -51,8 +51,12 @@ public class CreateTicketCommand implements ISimpleCommand {
                         .withEmoji(Emoji.fromUnicode("🐞")))
 
                 .addOptions(SelectOption.of("서비스 제한 문의", TicketType.PUNISHMENT.toString().toLowerCase())
-                        .withDescription("계정 및 서비스의 제한")
+                        .withDescription("계정 및 서비스의 제한 항소")
                         .withEmoji(Emoji.fromUnicode("🚫")))
+
+                .addOptions(SelectOption.of("신고", TicketType.USER_REPORT.toString().toLowerCase())
+                        .withDescription("유저 신고 및 제보")
+                        .withEmoji(Emoji.fromUnicode("📢")))
                 .build();
 
         MessageEmbed embed = new EmbedBuilder()
