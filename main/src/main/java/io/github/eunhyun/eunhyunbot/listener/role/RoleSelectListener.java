@@ -134,7 +134,7 @@ public class RoleSelectListener extends ListenerAdapter {
                                         .setColor(EmbedColorFactory.getEmbedColor(EmbedColorFactory.Type.ERROR))
                                         .setTitle("%s 역할 받기 | 오류 %s".formatted(DiscordEmojiUtil.CROSS_MARK, DiscordEmojiUtil.CROSS_MARK))
                                         .setDescription("> **이미 선택하신 역할이 있습니다.**")
-                                        .setThumbnail(member.getUser().getAvatarUrl())
+                                        .setThumbnail(member.getUser().getEffectiveAvatarUrl())
                                         .build())
                                 .queue(),
                         error -> log.error("Failed to send error message to user {}: {}", member.getUser().getAsTag(), error.getMessage())

@@ -110,7 +110,7 @@ public class WarnCommand implements ISlashCommand {
                                     """
                                     .formatted(target.getAsMention(), NumberFormatter.commas(amount), reason)
                             )
-                            .setThumbnail(target.getAvatarUrl())
+                            .setThumbnail(target.getEffectiveAvatarUrl())
                             .build();
 
                     target.openPrivateChannel().complete()
@@ -130,7 +130,7 @@ public class WarnCommand implements ISlashCommand {
                                     """
                                     .formatted(target.getAsMention(), NumberFormatter.commas(amount), reason)
                             )
-                            .setThumbnail(target.getAvatarUrl())
+                            .setThumbnail(target.getEffectiveAvatarUrl())
                             .build();
                     event.replyEmbeds(embed2).setEphemeral(true).queue();
 
@@ -154,7 +154,7 @@ public class WarnCommand implements ISlashCommand {
                                     """
                                     .formatted(target.getAsMention(), NumberFormatter.commas(amount), reason)
                             )
-                            .setThumbnail(target.getAvatarUrl())
+                            .setThumbnail(target.getEffectiveAvatarUrl())
                             .build();
                     event.replyEmbeds(embed).queue();
                     target.openPrivateChannel().complete()
@@ -182,7 +182,7 @@ public class WarnCommand implements ISlashCommand {
                                     """
                                     .formatted(target.getAsMention(), NumberFormatter.commas(amount), reason)
                             )
-                            .setThumbnail(target.getAvatarUrl())
+                            .setThumbnail(target.getEffectiveAvatarUrl())
                             .build();
                     event.replyEmbeds(embed).queue();
                     target.openPrivateChannel().complete()
@@ -204,7 +204,7 @@ public class WarnCommand implements ISlashCommand {
                             .setColor(EMBED_COLOR_SUCCESS)
                             .setTitle("%s 경고 초기화 | 성공 %s".formatted(DiscordEmojiUtil.CHECK_MARK, DiscordEmojiUtil.CHECK_MARK))
                             .setDescription("> **%s님의 경고를 초기화하였습니다.**".formatted(target.getAsMention()))
-                            .setThumbnail(target.getAvatarUrl())
+                            .setThumbnail(target.getEffectiveAvatarUrl())
                             .build();
                     event.replyEmbeds(embed).queue();
                     target.openPrivateChannel().complete()
@@ -237,7 +237,7 @@ public class WarnCommand implements ISlashCommand {
             targetId = event.getUser().getId();
         }
 
-        String userAvatarCheck = event.getJDA().retrieveUserById(targetId).complete().getAvatarUrl();
+        String userAvatarCheck = event.getJDA().retrieveUserById(targetId).complete().getEffectiveAvatarUrl();
 
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(EMBED_COLOR)

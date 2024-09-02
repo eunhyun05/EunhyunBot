@@ -55,7 +55,7 @@ public class BanCommand implements ISlashCommand {
                                                 """
                                                 .formatted(targetUser.getAsMention(), reason)
                                         )
-                                        .setThumbnail(targetUser.getAvatarUrl())
+                                        .setThumbnail(targetUser.getEffectiveAvatarUrl())
                                         .build())
                                 .setEphemeral(true)
                                 .queue(success -> sendLogMessage(guild, targetUser.getAsMention(), reason)));
