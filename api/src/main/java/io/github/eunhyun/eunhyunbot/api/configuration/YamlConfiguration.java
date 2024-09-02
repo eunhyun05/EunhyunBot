@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.*;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -149,6 +150,23 @@ public class YamlConfiguration implements FileConfiguration {
 
     @Override
     public void setBoolean(String path, boolean value) {
+        set(path, value);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getList(String path, Class<T> clazz) {
+        List<?> list = get(path, List.class);
+        if (list == null) {
+            return null;
+        }
+        return (List<T>) list.stream()
+                .filter(clazz::isInstance)
+                .toList();
+    }
+
+    @Override
+    public void setList(String path, List<?> value) {
         set(path, value);
     }
 

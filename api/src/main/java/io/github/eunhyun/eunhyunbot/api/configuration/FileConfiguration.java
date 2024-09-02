@@ -1,6 +1,7 @@
 package io.github.eunhyun.eunhyunbot.api.configuration;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface FileConfiguration {
 
@@ -43,6 +44,10 @@ public interface FileConfiguration {
     boolean getBoolean(String path);
 
     void setBoolean(String path, boolean value);
+
+    <T> List<T> getList(String path, Class<T> clazz);
+
+    void setList(String path, List<?> value);
 
     void save() throws IOException;
 }
