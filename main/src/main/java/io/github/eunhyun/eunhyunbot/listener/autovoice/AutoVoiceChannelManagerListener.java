@@ -1,4 +1,4 @@
-package io.github.eunhyun.eunhyunbot.listener;
+package io.github.eunhyun.eunhyunbot.listener.autovoice;
 
 import io.github.eunhyun.eunhyunbot.EunhyunBot;
 import io.github.eunhyun.eunhyunbot.api.util.KoreanChannelNameGenerator;
