@@ -11,7 +11,8 @@ public enum TicketType {
 
     GENERAL("일반"),
     BUG_REPORT("버그"),
-    PUNISHMENT("제한");
+    PUNISHMENT("제한"),
+    USER_REPORT("신고");
 
     private final String name;
 
