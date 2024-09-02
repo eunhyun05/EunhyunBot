@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
+import java.util.List;
 
 @Slf4j
 public class AutoVoiceChannelManagerListener extends ListenerAdapter {
@@ -20,6 +21,7 @@ public class AutoVoiceChannelManagerListener extends ListenerAdapter {
     private static final long SOURCE_VOICE_CHANNEL_ID = EunhyunBot.getInstance().getConfig().getLong("auto_voice_channel.source_voice_channel_id");
     private static final String SOURCE_VOICE_CHANNEL_NAME = EunhyunBot.getInstance().getConfig().getString("auto_voice_channel.source_voice_channel_name");
     private static final long TARGET_CATEGORY_ID = EunhyunBot.getInstance().getConfig().getLong("auto_voice_channel.target_category_id");
+    private static final List<Long> BLACKLIST_CHANNEL_IDS = EunhyunBot.getInstance().getConfig().getList("auto_voice_channel.blacklist", Long.class);
 
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
@@ -56,8 +58,15 @@ public class AutoVoiceChannelManagerListener extends ListenerAdapter {
         }
 
         if (channelLeft != null && channelLeft.getMembers().isEmpty()) {
-            if (!channelLeft.getId().equals(String.valueOf(SOURCE_VOICE_CHANNEL_ID)) || !channelLeft.getName().equals(SOURCE_VOICE_CHANNEL_NAME)) {
-                channelLeft.delete().queue(success -> log.info("비어 있는 음성 채널을 삭제했습니다: {}", channelLeft.getName()), failure -> log.error("음성 채널 삭제에 실패했습니다: {}", channelLeft.getName(), failure));
+            long channelLeftId = channelLeft.getIdLong();
+            if (channelLeftId != SOURCE_VOICE_CHANNEL_ID &&
+                    !SOURCE_VOICE_CHANNEL_NAME.equals(channelLeft.getName()) &&
+                    !BLACKLIST_CHANNEL_IDS.contains(channelLeftId)) {
+
+                channelLeft.delete().queue(
+                        _ -> log.info("Deleted empty voice channel: {}", channelLeft.getName()),
+                        failure -> log.error("Failed to delete voice channel: {}", channelLeft.getName(), failure)
+                );
             }
         }
     }
