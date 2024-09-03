@@ -28,7 +28,7 @@ import java.util.EnumSet;
 @SimpleCommand(
         command = "역할받기생성",
         description = "역할 받기 메시지를 생성합니다.",
-        usage = "?역할받기생성 <나이|성별|발로란트티어>"
+        usage = "?역할받기생성 <나이|성별|발로란트티어|인증>"
 )
 public class CreateGetRoleMessageCommand implements ISimpleCommand {
 
@@ -47,7 +47,7 @@ public class CreateGetRoleMessageCommand implements ISimpleCommand {
 
         String[] args = event.getMessage().getContentRaw().split("\\s", 2);
         if (args.length < 2) {
-            event.getChannel().sendMessage("올바른 명령어 사용법: " + "?역할받기생성 <나이|성별|발로란트티어>").queue();
+            event.getChannel().sendMessage("올바른 명령어 사용법: " + "?역할받기생성 <나이|성별|발로란트티어|인증>").queue();
             return;
         }
 
@@ -55,7 +55,7 @@ public class CreateGetRoleMessageCommand implements ISimpleCommand {
         try {
             roleCategory = RoleCategoryType.fromName(args[1]);
         } catch (IllegalArgumentException e) {
-            event.getChannel().sendMessage("잘못된 역할 카테고리입니다. 사용 가능한 카테고리: 나이, 성별, 발로란트티어").queue();
+            event.getChannel().sendMessage("잘못된 역할 카테고리입니다. 사용 가능한 카테고리: 나이, 성별, 발로란트티어, 인증").queue();
             return;
         }
 
@@ -65,6 +65,7 @@ public class CreateGetRoleMessageCommand implements ISimpleCommand {
             case AGE -> sendAgeMessageEmbed(event.getChannel());
             case GENDER -> sendGenderMessageEmbed(event.getChannel());
             case VALORANT_TIER -> sendValorantTierMessageEmbed(event.getChannel());
+            case VERIFY -> sendVerifyMessageEmbed(event.getChannel());
             default -> throw new IllegalStateException("Unexpected value: " + roleCategory);
         }
     }
@@ -169,5 +170,21 @@ public class CreateGetRoleMessageCommand implements ISimpleCommand {
                     message.addReaction(Emoji.fromFormatted(DiscordEmojiUtil.VALORANT_TIER_IMMORTAL)).queue();
                     message.addReaction(Emoji.fromFormatted(DiscordEmojiUtil.VALORANT_TIER_RADIANT)).queue();
                 });
+    }
+
+    private void sendVerifyMessageEmbed(MessageChannelUnion channel) {
+        channel.sendMessageEmbeds(new EmbedBuilder()
+                        .setColor(EMBED_COLOR)
+                        .setTitle("%s 인증됨 | 역할 %s".formatted(DiscordEmojiUtil.CHECK_MARK, DiscordEmojiUtil.CHECK_MARK))
+                        .setDescription("""
+                                > **모든 카테고리의 역할을 선택하셨다면 아래 체크표시를 눌러주세요.**
+                                
+                                > **`🎇` 행복한 시간되세요 `🎇`**
+                                """
+                        )
+                        .setThumbnail(EunhyunImageUtil.THUMBNAIL_IMAGE_URL)
+                        .setFooter("마지막으로, 인증됨 역할을 지급받으시면 서버에서 활동하실 수 있습니다!", EunhyunImageUtil.THUMBNAIL_IMAGE_URL)
+                        .build())
+                .queue(message -> message.addReaction(Emoji.fromFormatted(DiscordEmojiUtil.CHECK_MARK)).queue());
     }
 }

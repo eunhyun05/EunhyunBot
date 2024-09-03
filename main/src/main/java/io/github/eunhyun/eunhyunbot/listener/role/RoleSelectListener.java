@@ -5,6 +5,7 @@ import io.github.eunhyun.eunhyunbot.api.bot.BotEventHandler;
 import io.github.eunhyun.eunhyunbot.api.enums.AgeRoleType;
 import io.github.eunhyun.eunhyunbot.api.enums.GenderRoleType;
 import io.github.eunhyun.eunhyunbot.api.enums.ValorantTierType;
+import io.github.eunhyun.eunhyunbot.api.enums.VerifyRoleType;
 import io.github.eunhyun.eunhyunbot.api.factory.EmbedColorFactory;
 import io.github.eunhyun.eunhyunbot.api.interfaces.RoleType;
 import io.github.eunhyun.eunhyunbot.api.util.DiscordEmojiUtil;
@@ -27,6 +28,7 @@ public class RoleSelectListener extends ListenerAdapter {
     private final long AGE_MESSAGE_ID = EunhyunBot.getInstance().getConfig().getLong("role_select_channel_settings.age_message_id");
     private final long GENDER_MESSAGE_ID = EunhyunBot.getInstance().getConfig().getLong("role_select_channel_settings.gender_message_id");
     private final long VALORANT_TIER_MESSAGE_ID = EunhyunBot.getInstance().getConfig().getLong("role_select_channel_settings.valorant_tier_message_id");
+    private final long VERIFY_MESSAGE_ID = EunhyunBot.getInstance().getConfig().getLong("role_select_channel_settings.verify_message_id");
 
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
@@ -96,6 +98,10 @@ public class RoleSelectListener extends ListenerAdapter {
             } else if (DiscordEmojiUtil.VALORANT_TIER_RADIANT.contains(reactionCode)) {
                 return ValorantTierType.RADIANT;
             }
+        } else if (messageId == VERIFY_MESSAGE_ID) {
+            if (DiscordEmojiUtil.CHECK_MARK.contains(reactionCode)) {
+                return VerifyRoleType.VERIFY;
+            }
         }
         return null;
     }
@@ -125,6 +131,7 @@ public class RoleSelectListener extends ListenerAdapter {
                         case AgeRoleType _ -> AgeRoleType.isAgeRole(r.getIdLong());
                         case GenderRoleType _ -> GenderRoleType.isGenderRole(r.getIdLong());
                         case ValorantTierType _ -> ValorantTierType.isValorantTierRole(r.getIdLong());
+                        case VerifyRoleType _ -> VerifyRoleType.isVerifyRole(r.getIdLong());
                         default -> false;
                     });
 

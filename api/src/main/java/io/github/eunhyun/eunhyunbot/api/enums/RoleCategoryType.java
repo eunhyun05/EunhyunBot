@@ -9,7 +9,8 @@ public enum RoleCategoryType {
 
     AGE("나이"),
     GENDER("성별"),
-    VALORANT_TIER("발로란트티어");
+    VALORANT_TIER("발로란트티어"),
+    VERIFY("인증");
 
     private final String name;
 
