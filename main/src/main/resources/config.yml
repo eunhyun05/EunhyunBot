@@ -69,3 +69,11 @@ role_select_channel_settings:
   gender_message_id: 1277203321412653117
   valorant_tier_message_id: 1280260634289766451
   verify_message_id: 1280537775451672668
+
+# + -------------------------------------------------------------------------------- + #
+# | JOIN MESSAGE CHANNEL SETTINGS ( 입장 메시지 채널 설정 )
+# + -------------------------------------------------------------------------------- + #
+join_message_channel:
+  channel_id: 1282136507775189032
+  rule_channel_id: 1276510089460584459
+  main_chat_channel_id: 1281350464352288809
